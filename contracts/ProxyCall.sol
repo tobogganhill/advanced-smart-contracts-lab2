@@ -1,6 +1,11 @@
 pragma solidity ^0.5.0;
 
-contract ProxyDelegate {
+// Requirements...
+// Add a new Proxy contract which will use .call() instead of .delegatecall().
+// Write test cases for the new Proxy contract to test getMsgSender() and setVersion().
+// Do you notice any differences between .call() and .delegatecall()?
+
+contract ProxyCall {
     uint256 public version;
     address public owner;
     address public delegate; // contract to delegate calls to
@@ -13,9 +18,7 @@ contract ProxyDelegate {
     }
 
     function() external {
-        (bool success, bytes memory returnData) = delegate.delegatecall(
-            msg.data
-        );
+        (bool success, bytes memory returnData) = delegate.call(msg.data);
         require(success, "external call failed");
         emit LogResult(returnData);
     }
